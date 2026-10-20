@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentPro - LIC Agent Management & Operations Portal | Task WD-LIC-001</title>
+  <meta name="description" content="AgentPro is a comprehensive LIC agent management portal for client registration, policy tracking, premium monitoring, commission calculation, and renewals.">
+  
+  <!-- FontAwesome Icons & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js for High-End Financial Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Application Stylesheet (Root Flat Architecture) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ================= Sidebar Navigation ================= -->
+  <aside class="app-sidebar" id="appSidebar">
+    <div class="sidebar-header">
+      <a href="#dashboard" class="brand-badge">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <span class="brand-title">AgentPro</span>
+          <span class="brand-sub">LIC Portal · WD-LIC-001</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Agent Quick Profile & Session Info in Sidebar -->
+    <div class="sidebar-agent-card" id="sidebarAgentCard" title="Click to view Active Session info" style="cursor: pointer;" onclick="App.openSessionModal()">
+      <div class="agent-avatar" id="sidebarAgentAvatar">RV</div>
+      <div class="agent-info" style="flex:1;">
+        <h4 id="sidebarAgentName">Ramesh K. Verma</h4>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-top: 2px;">
+          <p id="sidebarAgentCode" style="margin:0;"><i class="fa-solid fa-id-badge"></i> DAS-LIC-001</p>
+          <span class="session-badge active" id="sidebarSessionBadge">
+            <span class="session-dot"></span> Active
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="menu-category">Main Operations</li>
+      <li>
+        <a href="#dashboard" class="nav-link active" data-view="dashboard" id="nav-dashboard">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="#clients" class="nav-link" data-view="clients" id="nav-clients">
+          <i class="fa-solid fa-user-group"></i>
+          <span>Clients (CRUD)</span>
+        </a>
+      </li>
+      <li>
+        <a href="#policies" class="nav-link" data-view="policies" id="nav-policies">
+          <i class="fa-solid fa-file-shield"></i>
+          <span>Policies (CRUD)</span>
+        </a>
+      </li>
+      <li>
+        <a href="#premiums" class="nav-link" data-view="premiums" id="nav-premiums">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <span>Premium Tracking</span>
+        </a>
+      </li>
+
+      <li class="menu-category">Finance & Retention</li>
+      <li>
+        <a href="#commissions" class="nav-link" data-view="commissions" id="nav-commissions">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Commission Calc</span>
+        </a>
+      </li>
+      <li>
+        <a href="#renewals" class="nav-link" data-view="renewals" id="nav-renewals">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>Renewals</span>
+          <span class="nav-badge" id="sidebarRenewalBadge">2</span>
+        </a>
+      </li>
+      <li>
+        <a href="#claims" class="nav-link" data-view="claims" id="nav-claims">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span>Claims Settlement</span>
+        </a>
+      </li>
+
+      <li class="menu-category">Growth & Audit</li>
+      <li>
+        <a href="#leads" class="nav-link" data-view="leads" id="nav-leads">
+          <i class="fa-solid fa-funnel-dollar"></i>
+          <span>Leads Pipeline</span>
+        </a>
+      </li>
+      <li>
+        <a href="#reports" class="nav-link" data-view="reports" id="nav-reports">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Reports & Export</span>
+        </a>
+      </li>
+      <li>
+        <a href="#settings" class="nav-link" data-view="settings" id="nav-settings">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Agent Profile</span>
+        </a>
+      </li>
+    </ul>
+
+    <div style="padding: 1rem 1.25rem; font-size: 0.72rem; color: #64748b; border-top: 1px solid rgba(255,255,255,0.06);">
+      Data Alcott Systems · Task WD-LIC-001<br>
+      Evaluation Student Code: DAS-LIC-001
+    </div>
+  </aside>
+
+  <!-- ================= Main Application Wrapper ================= -->
+  <div class="main-wrapper">
+
+    <!-- Top Header Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="page-title">
+          <h2 id="headerPageTitle">Executive Agent Dashboard</h2>
+          <p id="headerPageDesc">Real-time sales analytics, active policies & key commission metrics</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Quick Global Search -->
+        <!-- Quick Global Search -->
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="globalSearchInput" placeholder="Quick search clients, policy #...">
+        </div>
+
+        <!-- Agent Session Chip & Indicator -->
+        <div class="agent-session-chip" id="headerSessionChip" onclick="App.openSessionModal()" title="View Active Session Details">
+          <span class="session-dot"></span>
+          <span class="session-chip-text" id="headerSessionText">DAS-LIC-001 · Active</span>
+        </div>
+
+        <!-- Lock / End Session Button -->
+        <button class="btn-icon" id="headerLogoutBtn" title="Lock / End Agent Session" onclick="App.handleLogout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+
+        <!-- Dark / Light Theme Toggle Button -->
+        <button class="btn-icon" id="themeToggleBtn" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="btn-icon" title="Urgent Renewal Alerts" onclick="App.navigate('renewals')">
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge-dot"></span>
+        </button>
+
+        <!-- New Action Primary Button -->
+        <button class="btn btn-primary" onclick="App.openAddPolicyModal()">
+          <i class="fa-solid fa-plus"></i> New Policy
+        </button>
+      </div>
+    </header>
+
+    <!-- Main View Switcher Container -->
+    <main class="view-container">
+
+      <!-- Urgent Renewal Alert Banner -->
+      <div id="urgentAlertBanner" style="display: none; align-items: center; justify-content: space-between; background: linear-gradient(90deg, #ef4444, #dc2626); color: #fff; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; font-weight: 500; font-size: 0.88rem; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.2rem;"></i>
+          <span id="urgentAlertText">Notice: Policies are pending renewal. Follow up immediately to prevent lapse!</span>
+        </div>
+        <button class="btn btn-sm" style="background: rgba(255,255,255,0.2); color:#fff; border:none;" onclick="App.navigate('renewals')">
+          Inspect Renewals &rarr;
+        </button>
+      </div>
+
+      <!-- Quick Action Shortcuts Bar -->
+      <div class="quick-actions-bar">
+        <button class="action-pill" onclick="App.openAddClientModal()">
+          <i class="fa-solid fa-user-plus"></i> Add New Client
+        </button>
+        <button class="action-pill" onclick="App.openAddPolicyModal()">
+          <i class="fa-solid fa-file-contract"></i> Issue Policy
+        </button>
+        <button class="action-pill" onclick="App.navigate('premiums')">
+          <i class="fa-solid fa-money-check-dollar"></i> Log Premium
+        </button>
+        <button class="action-pill" onclick="App.navigate('commissions')">
+          <i class="fa-solid fa-calculator"></i> Commission Calc
+        </button>
+        <button class="action-pill" onclick="App.openNewLeadModal()">
+          <i class="fa-solid fa-bullseye"></i> Capture New Lead
+        </button>
+        <button class="action-pill" onclick="App.exportCommissionStatementPDF()">
+          <i class="fa-solid fa-print"></i> Print ITR Audit
+        </button>
+      </div>
+
+      <!-- ================= 1. DASHBOARD VIEW ================= -->
+      <section id="view-dashboard" class="view-section active">
+        <!-- Live Action Toolbar -->
+        <div class="dashboard-toolbar">
+          <div class="dashboard-toolbar-left">
+            <span class="badge" style="background:rgba(16,185,129,0.12); color:#10b981; font-weight:700;">
+              <i class="fa-solid fa-circle-check"></i> Live Session Sync
+            </span>
+            <span><i class="fa-regular fa-clock"></i> <span id="dashboardLastSyncTime">Synchronized just now</span></span>
+            <span style="color:var(--text-dim);">·</span>
+            <span>Agent Code: <strong id="dashboardAgentCodeBadge">DAS-LIC-001</strong></span>
+          </div>
+          <div class="dashboard-toolbar-right">
+            <button class="btn btn-sm btn-outline" id="dashboardRefreshBtn" onclick="App.refreshDashboardMetrics()" title="Refresh live statistics & charts">
+              <i class="fa-solid fa-arrows-rotate"></i> Sync Metrics
+            </button>
+          </div>
+        </div>
+
+        <!-- Key Metrics Cards (Interactive & Clickable) -->
+        <div class="stats-grid">
+          <div class="stat-card primary stat-card-clickable" id="statCardClients" onclick="App.navigate('clients')" title="Click to view Client Management" role="button">
+            <div class="stat-meta">
+              <h4>Active Policyholders</h4>
+              <div class="stat-val" id="statTotalClients">6</div>
+              <div class="stat-sub"><i class="fa-solid fa-arrow-trend-up" style="color:var(--success)"></i> +14% this quarter</div>
+              <div class="stat-action-hint">Manage Clients <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="stat-icon primary">
+              <i class="fa-solid fa-users"></i>
+            </div>
+          </div>
+
+          <div class="stat-card gold stat-card-clickable" id="statCardPolicies" onclick="App.navigate('policies')" title="Click to view Policy Operations" role="button">
+            <div class="stat-meta">
+              <h4>Active Policies</h4>
+              <div class="stat-val" id="statActivePolicies">5</div>
+              <div class="stat-sub">Across 6 LIC Categories</div>
+              <div class="stat-action-hint">View Portfolio <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="stat-icon gold">
+              <i class="fa-solid fa-file-shield"></i>
+            </div>
+          </div>
+
+          <div class="stat-card emerald stat-card-clickable" id="statCardPremiums" onclick="App.navigate('premiums')" title="Click to view Premium Tracking" role="button">
+            <div class="stat-meta">
+              <h4>Annual Premium Vol</h4>
+              <div class="stat-val" id="statPremiumVolume">₹4.0 Lakhs</div>
+              <div class="stat-sub"><i class="fa-solid fa-circle-check" style="color:var(--success)"></i> In-force coverage</div>
+              <div class="stat-action-hint">Track Collections <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="stat-icon success">
+              <i class="fa-solid fa-wallet"></i>
+            </div>
+          </div>
+
+          <div class="stat-card indigo stat-card-clickable" id="statCardCommissions" onclick="App.navigate('commissions')" title="Click to view Commission Calculator" role="button">
+            <div class="stat-meta">
+              <h4>Commission Earned</h4>
+              <div class="stat-val" id="statTotalCommission">₹21,150</div>
+              <div class="stat-sub">Avg Rate: 16.2%</div>
+              <div class="stat-action-hint">Calculate Ledger <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="stat-icon info">
+              <i class="fa-solid fa-coins"></i>
+            </div>
+          </div>
+
+          <div class="stat-card rose stat-card-clickable" id="statCardRenewals" onclick="App.navigate('renewals')" title="Click to view Pending Renewals" role="button">
+            <div class="stat-meta">
+              <h4>Pending Renewals</h4>
+              <div class="stat-val" id="statPendingRenewals">3</div>
+              <div class="stat-sub" style="color:var(--danger)"><i class="fa-solid fa-clock"></i> Action required</div>
+              <div class="stat-action-hint">Prevent Lapse <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="stat-icon danger">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="dashboard-grid-2">
+          <!-- Premium & Commission Analytics -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-line" style="color:var(--primary)"></i>
+                Monthly Premium Collection & Commission Growth
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">FY 2025-26</span>
+            </div>
+            <div class="card-body" style="height: 320px; position:relative;">
+              <canvas id="premiumTrendChart"></canvas>
+              <div id="premiumTrendFallback" style="display:none; height:100%;"></div>
+            </div>
+          </div>
+
+          <!-- Policy Category Doughnut -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-pie" style="color:var(--lic-gold)"></i>
+                Policy Portfolio by Plan Type
+              </div>
+              <span class="badge" id="portfolioTotalBadge" style="background:rgba(245,158,11,0.1); color:var(--lic-gold); font-size:0.75rem;">7 Policies</span>
+            </div>
+            <div class="card-body" style="height: 320px; position:relative;">
+              <canvas id="policyTypeChart"></canvas>
+              <div id="policyTypeFallback" style="display:none; height:100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed & Quick MDRT Goal Tracker -->
+        <div class="dashboard-grid-2">
+          <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 0.5rem;">
+              <div class="card-title">
+                <i class="fa-solid fa-bolt" style="color:var(--lic-gold)"></i>
+                Live Operations & Activity Stream
+              </div>
+              <div class="activity-filter-group">
+                <button type="button" class="activity-filter-btn active" data-filter="all" onclick="App.filterActivityFeed('all')">All</button>
+                <button type="button" class="activity-filter-btn" data-filter="payments" onclick="App.filterActivityFeed('payments')">Payments</button>
+                <button type="button" class="activity-filter-btn" data-filter="policies" onclick="App.filterActivityFeed('policies')">Policies</button>
+                <button type="button" class="activity-filter-btn" data-filter="leads" onclick="App.filterActivityFeed('leads')">Leads</button>
+              </div>
+            </div>
+            <div class="card-body" id="recentActivityFeed" style="max-height: 380px; overflow-y: auto;">
+              <!-- Dynamically Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- MDRT Tracker Card (Dynamic Math) -->
+          <div class="card" style="background: linear-gradient(135deg, #0f2744, #003366); color: #fff;">
+            <div class="card-header" style="border-color: rgba(255,255,255,0.1);">
+              <div class="card-title" style="color: #fff;">
+                <i class="fa-solid fa-trophy" style="color: var(--lic-gold);"></i>
+                LIC MDRT Qualifier Gauge
+              </div>
+              <span class="badge" style="background:rgba(245,158,11,0.25); color:var(--lic-gold); font-size:0.75rem; border:1px solid rgba(245,158,11,0.4);">
+                Target: ₹10.0 L
+              </span>
+            </div>
+            <div class="card-body" style="display:flex; flex-direction:column; justify-content:space-between;">
+              <p style="font-size:0.85rem; color:#cbd5e1;">
+                Million Dollar Round Table (MDRT) Target for 2026: <strong>₹10,00,000</strong> first-year eligible commission.
+              </p>
+              
+              <div style="margin: 1.5rem 0;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom: 0.5rem;">
+                  <span>Achieved: <strong id="mdrtAchievedVal" style="color:#fff;">₹21,150</strong></span>
+                  <span id="mdrtPercentVal" style="color:var(--lic-gold); font-weight:700;">2.1%</span>
+                </div>
+                <div style="width:100%; height:12px; background:rgba(255,255,255,0.15); border-radius:10px; overflow:hidden;">
+                  <div id="mdrtProgressBar" style="width: 2.1%; height:100%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius:10px; transition: width 0.6s ease;"></div>
+                </div>
+                <div style="font-size:0.74rem; color:#94a3b8; margin-top:0.4rem; text-align:right;" id="mdrtRemainingText">
+                  Remaining: ₹9,78,850
+                </div>
+              </div>
+
+              <div id="mdrtMilestoneTip" style="background: rgba(255,255,255,0.06); padding: 0.8rem; border-radius: 8px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 0.75rem;">
+                <i class="fa-solid fa-lightbulb" style="color:var(--lic-gold)"></i>
+                Closing 4 more <em>LIC Jeevan Labh</em> policies this month will reach the Chairman's Trophy milestone!
+              </div>
+
+              <div style="display:flex; gap:0.5rem;">
+                <button class="btn btn-sm" style="flex:1; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; border:none; font-weight:600;" onclick="App.openAddPolicyModal()">
+                  <i class="fa-solid fa-plus"></i> Issue New Policy
+                </button>
+                <button class="btn btn-sm" style="background:rgba(255,255,255,0.1); color:#fff; border:none;" onclick="App.navigate('commissions')">
+                  Commission Calc &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. CLIENT MANAGEMENT (CRUD) ================= -->
+      <section id="view-clients" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Policyholders & Clients</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Manage client records, contact numbers, nominees, and view complete policy portfolios.</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-outline" onclick="App.exportClientsCSV()">
+              <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+            <button class="btn btn-primary" onclick="App.openAddClientModal()">
+              <i class="fa-solid fa-user-plus"></i> Add New Client
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="clientSearchInput" placeholder="Search by name, phone, email, city...">
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Client ID</th>
+                <th>Client Details</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Nominee (Relationship)</th>
+                <th>Annual Income</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clientsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 3. POLICY MANAGEMENT (CRUD) ================= -->
+      <section id="view-policies" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Insurance Policy Ledger</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Endowment, Health, Money Back, Child, Pension & Term plans under your agency.</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-outline" onclick="App.exportPoliciesCSV()">
+              <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+            <button class="btn btn-primary" onclick="App.openAddPolicyModal()">
+              <i class="fa-solid fa-plus"></i> Issue New Policy
+            </button>
+          </div>
+        </div>
+
+        <!-- Filters Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="policySearchInput" placeholder="Search by policy #, client or plan...">
+          </div>
+
+          <div class="filter-group">
+            <select class="select-filter" id="policyTypeFilter">
+              <option value="All">All Policy Types</option>
+              <option value="Endowment Plan">Endowment Plan</option>
+              <option value="Health Insurance">Health Insurance</option>
+              <option value="Money Back Plan">Money Back Plan</option>
+              <option value="Child Plan">Child Plan</option>
+              <option value="Pension Plan">Pension Plan</option>
+              <option value="Term Insurance">Term Insurance</option>
+            </select>
+
+            <select class="select-filter" id="policyStatusFilter">
+              <option value="All">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Renewal Due">Renewal Due</option>
+              <option value="Lapsed">Lapsed</option>
+              <option value="Matured">Matured</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Policy No</th>
+                <th>Client Name</th>
+                <th>Plan & Type</th>
+                <th>Premium Outlay</th>
+                <th>Sum Assured</th>
+                <th>Term</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="policiesTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 4. PREMIUM TRACKING ================= -->
+      <section id="view-premiums" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Premium Collection & Payments</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Track due dates, log collection receipts, and issue payment certificates.</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-outline" onclick="App.exportCommissionStatementPDF()">
+              <i class="fa-solid fa-print"></i> Print Collection Summary
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Txn ID</th>
+                <th>Policy No</th>
+                <th>Client Name</th>
+                <th>Premium Amount</th>
+                <th>Due Date</th>
+                <th>Payment Date</th>
+                <th>Mode</th>
+                <th>Status</th>
+                <th>Receipt / Action</th>
+              </tr>
+            </thead>
+            <tbody id="premiumsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 5. COMMISSION CALCULATOR & LEDGER ================= -->
+      <section id="view-commissions" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>LIC Commission Calculator & Ledger</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Official LIC Commission Schedule: Year 1 (25%), Year 2 (15%), Year 3-5 (10%), Renewal (5%).</p>
+          </div>
+        </div>
+
+        <!-- Interactive Calculator Widget -->
+        <div class="calc-container" style="margin-bottom: 2rem;">
+          <div>
+            <h4 style="margin-bottom: 1.25rem; font-size: 1.15rem; color: var(--primary);">
+              <i class="fa-solid fa-calculator"></i> Real-Time Commission Estimator
+            </h4>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Annual Premium Amount (₹) <span class="req">*</span></label>
+                <input type="number" id="calcPremium" class="form-control" value="60000" step="1000">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Policy Tenure Year <span class="req">*</span></label>
+                <select id="calcYear" class="form-control">
+                  <option value="1">Year 1 (New Business - 25%)</option>
+                  <option value="2">Year 2 (Renewal Tier 1 - 15%)</option>
+                  <option value="3">Year 3 to 5 (Renewal Tier 2 - 10%)</option>
+                  <option value="6">Year 6+ (Perpetual Renewal - 5%)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Plan Classification</label>
+                <select id="calcPlanType" class="form-control">
+                  <option value="Endowment Plan">Endowment Plan (Jeevan Labh / Anand)</option>
+                  <option value="Term Insurance">Term Insurance (Tech Term)</option>
+                  <option value="Money Back Plan">Money Back Plan</option>
+                  <option value="Health Insurance">Health Insurance (Cancer Cover)</option>
+                  <option value="Pension Plan">Pension Plan (Annuity)</option>
+                  <option value="Child Plan">Child Plan (Amritbaal)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="justify-content: center;">
+                <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.85rem; font-weight:600; margin-top:1.2rem;">
+                  <input type="checkbox" id="calcRider" checked style="width:18px; height:18px;">
+                  Include Accidental Rider Commission (+1.5%)
+                </label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnCalculateCommission" style="margin-top: 1.25rem;">
+              <i class="fa-solid fa-rotate"></i> Recalculate Payout
+            </button>
+          </div>
+
+          <!-- Calculation Output Display -->
+          <div class="calc-output-card">
+            <div>
+              <div class="lic-tag">LIC Agent Projected Payout</div>
+              <div class="amount-display" id="calcGrossCommission">₹15,900</div>
+              <div style="font-size:0.82rem; color:#94a3b8;">Effective Commission Rate: <strong id="calcRateText" style="color:#fff;">25.0% (Year 1)</strong></div>
+            </div>
+
+            <ul class="calc-breakdown-list">
+              <li>
+                <span>Base Commission:</span>
+                <span id="calcBaseAmt">₹15,000</span>
+              </li>
+              <li>
+                <span>Accidental Rider Incentive:</span>
+                <span id="calcRiderAmt">₹900</span>
+              </li>
+              <li>
+                <span>First-Year Performance Bonus:</span>
+                <span id="calcBonusAmt">₹1,500</span>
+              </li>
+              <li style="color: #f87171;">
+                <span>TDS Deduction (Sec 194D - 5%):</span>
+                <span id="calcTdsAmt">- ₹870</span>
+              </li>
+              <li class="highlight">
+                <span>Net Bank Credit Amount:</span>
+                <span id="calcNetAmt" style="color: var(--lic-gold); font-size: 1.15rem;">₹16,530</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Commission History Ledger -->
+        <h4 style="margin: 2rem 0 1rem; font-size: 1.1rem;">Commission Credit Ledger</h4>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Voucher #</th>
+                <th>Policy No</th>
+                <th>Client Name</th>
+                <th>Policy Year</th>
+                <th>Premium Outlay</th>
+                <th>Rate %</th>
+                <th>Commission Payout</th>
+                <th>Credited Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="commissionsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 6. RENEWAL MANAGEMENT ================= -->
+      <section id="view-renewals" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Policy Renewal & Retention Center</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Prevent policy lapse, monitor 30-day grace periods, and dispatch automated WhatsApp & Email reminders.</p>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Renewal ID</th>
+                <th>Policy No</th>
+                <th>Policyholder</th>
+                <th>Due Date</th>
+                <th>Premium Due</th>
+                <th>Grace Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="renewalsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 7. CLAIMS MANAGEMENT ================= -->
+      <section id="view-claims" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Insurance Claims & Settlement Tracker</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">File and monitor Death claims, Maturity settlements, Critical illness riders, and Surrender loans.</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-primary" onclick="App.openNewClaimModal()">
+              <i class="fa-solid fa-plus"></i> File New Claim
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Claim ID</th>
+                <th>Policy No</th>
+                <th>Claimant</th>
+                <th>Claim Category</th>
+                <th>Claim Amount</th>
+                <th>Submission Date</th>
+                <th>Settlement Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="claimsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 8. LEAD MANAGEMENT (KANBAN) ================= -->
+      <section id="view-leads" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Sales Prospects & Leads CRM Pipeline</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Track prospects across pipeline stages and convert them directly into active policyholders.</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-primary" onclick="App.openNewLeadModal()">
+              <i class="fa-solid fa-user-plus"></i> Capture New Lead
+            </button>
+          </div>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Col: New -->
+          <div class="kanban-col">
+            <div class="kanban-header">
+              <span class="kanban-title"><i class="fa-solid fa-sparkles" style="color:var(--primary)"></i> New Inquiries</span>
+              <span class="kanban-count" id="countLeadNew">0</span>
+            </div>
+            <div class="kanban-cards" id="leadsColNew"></div>
+          </div>
+
+          <!-- Col: Contacted -->
+          <div class="kanban-col">
+            <div class="kanban-header">
+              <span class="kanban-title"><i class="fa-solid fa-phone" style="color:var(--info)"></i> Contacted</span>
+              <span class="kanban-count" id="countLeadContacted">0</span>
+            </div>
+            <div class="kanban-cards" id="leadsColContacted"></div>
+          </div>
+
+          <!-- Col: Proposal Sent -->
+          <div class="kanban-col">
+            <div class="kanban-header">
+              <span class="kanban-title"><i class="fa-solid fa-file-invoice" style="color:var(--lic-gold)"></i> Proposal Sent</span>
+              <span class="kanban-count" id="countLeadProposal">0</span>
+            </div>
+            <div class="kanban-cards" id="leadsColProposal"></div>
+          </div>
+
+          <!-- Col: Converted -->
+          <div class="kanban-col">
+            <div class="kanban-header">
+              <span class="kanban-title"><i class="fa-solid fa-badge-check" style="color:var(--success)"></i> Converted (Won)</span>
+              <span class="kanban-count" id="countLeadConverted">0</span>
+            </div>
+            <div class="kanban-cards" id="leadsColConverted"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 9. PERFORMANCE REPORTS & EXPORTS ================= -->
+      <section id="view-reports" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Agency Audit & Performance Reports</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Download raw audit ledgers (CSV) and print certified statements for Income Tax filings.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-grid-3">
+          <div class="card">
+            <div class="card-body" style="text-align: center; padding: 2rem 1.5rem;">
+              <i class="fa-solid fa-users" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+              <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Client Directory Ledger</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Full list of registered policyholders (<span id="reportTotalClients">6</span> total), including nominee and medical history.
+              </p>
+              <button class="btn btn-outline" style="width: 100%;" onclick="App.exportClientsCSV()">
+                <i class="fa-solid fa-download"></i> Download CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body" style="text-align: center; padding: 2rem 1.5rem;">
+              <i class="fa-solid fa-shield-heart" style="font-size: 2.5rem; color: var(--lic-gold); margin-bottom: 1rem;"></i>
+              <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Policies Master Record</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Comprehensive table of <span id="reportTotalPolicies">7</span> policies, sums assured, maturity dates, and status.
+              </p>
+              <button class="btn btn-outline" style="width: 100%;" onclick="App.exportPoliciesCSV()">
+                <i class="fa-solid fa-download"></i> Download CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body" style="text-align: center; padding: 2rem 1.5rem;">
+              <i class="fa-solid fa-receipt" style="font-size: 2.5rem; color: var(--success); margin-bottom: 1rem;"></i>
+              <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">ITR Commission Statement</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Print-ready official statement of earnings (<span id="reportTotalCommission">₹21,150</span>) with Section 194D TDS calculations.
+              </p>
+              <button class="btn btn-gold" style="width: 100%;" onclick="App.exportCommissionStatementPDF()">
+                <i class="fa-solid fa-print"></i> Generate Printable PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10. SETTINGS & PROFILE ================= -->
+      <section id="view-settings" class="view-section">
+        <div class="section-header">
+          <div>
+            <h3>Agent Profile & Agency Parameters</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Credentials, official branch mapping, and browser storage controls.</p>
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 800px; margin-bottom: 2rem;">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-id-card"></i> Official LIC Agent Credentials
+            </div>
+          </div>
+          <div class="card-body">
+            <form id="agentProfileForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Agent Full Name</label>
+                  <input type="text" id="agentNameInput" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Agency Code (Student Code)</label>
+                  <input type="text" id="agentCodeInput" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Branch Name & Code</label>
+                  <input type="text" id="agentBranchInput" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Operating Division</label>
+                  <input type="text" id="agentDivisionInput" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Official Email</label>
+                  <input type="email" id="agentEmailInput" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Contact Phone</label>
+                  <input type="tel" id="agentPhoneInput" class="form-control" required>
+                </div>
+              </div>
+
+              <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-solid fa-floppy-disk"></i> Update Profile
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 800px; border-color: rgba(239,68,68,0.3);">
+          <div class="card-header" style="background: rgba(239, 68, 68, 0.05);">
+            <div class="card-title" style="color: var(--danger);">
+              <i class="fa-solid fa-trash-arrow-up"></i> Reset Sample Data
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Restores initial Indian LIC sample dataset (clients, policies, renewals, commissions).
+            </p>
+            <button class="btn btn-danger" onclick="App.resetPortalData()">
+              <i class="fa-solid fa-rotate-left"></i> Reset to Default Demonstration Data
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODALS CONTAINER ================= -->
+
+<!-- 1. Add/Edit Client Modal -->
+<div class="modal-overlay" id="clientModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="clientModalTitle">Register New Client</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <form id="clientForm">
+      <div class="modal-body">
+        <input type="hidden" id="clientId">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input type="text" id="clientName" class="form-control" placeholder="e.g. Rajesh S. Sundaram" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="clientPhone" class="form-control" placeholder="+91 98402 11234" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="clientEmail" class="form-control" placeholder="client@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input type="text" id="clientCity" class="form-control" placeholder="e.g. Chennai">
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Residential Address</label>
+            <input type="text" id="clientAddress" class="form-control" placeholder="Full street address and PIN code">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nominee Name <span class="req">*</span></label>
+            <input type="text" id="clientNominee" class="form-control" placeholder="e.g. Lakshmi Sundaram" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nominee Relationship <span class="req">*</span></label>
+            <select id="clientNomineeRelation" class="form-control">
+              <option value="Spouse">Spouse</option>
+              <option value="Father">Father</option>
+              <option value="Mother">Mother</option>
+              <option value="Son">Son</option>
+              <option value="Daughter">Daughter</option>
+              <option value="Sibling">Sibling</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Annual Income (₹)</label>
+            <input type="text" id="clientIncome" class="form-control" placeholder="₹15,00,000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Medical History / Risk Class</label>
+            <input type="text" id="clientMedical" class="form-control" placeholder="None / Fit (Normal ECG)">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Client Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Add/Edit Policy Modal -->
+<div class="modal-overlay" id="policyModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="policyModalTitle">Issue New Policy</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <form id="policyForm">
+      <div class="modal-body">
+        <input type="hidden" id="policyId">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Policy Number <span class="req">*</span></label>
+            <input type="text" id="policyNumber" class="form-control" required readonly style="background:var(--input-bg);">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assigned Client <span class="req">*</span></label>
+            <select id="policyClientId" class="form-control" required>
+              <!-- Populated via JS -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Policy Classification <span class="req">*</span></label>
+            <select id="policyType" class="form-control" required>
+              <option value="Endowment Plan">💰 Endowment Plan</option>
+              <option value="Health Insurance">🏥 Health Insurance</option>
+              <option value="Money Back Plan">📈 Money Back Plan</option>
+              <option value="Child Plan">👨‍👩‍👧‍👦 Child Plan</option>
+              <option value="Pension Plan">🏦 Pension Plan</option>
+              <option value="Term Insurance">🛡️ Term Insurance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Plan Name (Table) <span class="req">*</span></label>
+            <input type="text" id="policyPlanName" class="form-control" placeholder="e.g. LIC Jeevan Labh (Table 936)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Annual Premium Amount (₹) <span class="req">*</span></label>
+            <input type="number" id="policyPremiumAmount" class="form-control" placeholder="e.g. 54000" step="500" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sum Assured (₹) <span class="req">*</span></label>
+            <input type="number" id="policySumAssured" class="form-control" placeholder="e.g. 1000000" step="10000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tenure Term (Years)</label>
+            <input type="number" id="policyTerm" class="form-control" value="20" min="5" max="40">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment Frequency</label>
+            <select id="policyFrequency" class="form-control">
+              <option value="Yearly">Yearly</option>
+              <option value="Half-Yearly">Half-Yearly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Inception Date</label>
+            <input type="date" id="policyStartDate" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Policy Status</label>
+            <select id="policyStatus" class="form-control">
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Renewal Due">Renewal Due</option>
+              <option value="Lapsed">Lapsed</option>
+              <option value="Matured">Matured</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit & Issue Bond</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Client Portfolio Modal -->
+<div class="modal-overlay" id="portfolioModal">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <h3>Policyholder Portfolio Summary</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body" id="portfolioModalBody">
+      <!-- Populated via JS -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-modal-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Policy Document Certificate Modal -->
+<div class="modal-overlay" id="documentModal">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <h3>Official Policy Bond Certificate</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body" id="documentModalBody">
+      <!-- Populated via JS -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-modal-close>Close</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">
+        <i class="fa-solid fa-print"></i> Print Bond Document
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Simulated WhatsApp / SMS Reminder Modal -->
+<div class="modal-overlay" id="reminderModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Automated Renewal Notice Dispatcher</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body" id="reminderModalBody">
+      <!-- Populated via JS -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+      <button type="button" class="btn btn-success" onclick="App.dispatchNoticeNow()">
+        <i class="fa-solid fa-paper-plane"></i> Send Client Reminder Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 6. File New Claim Modal -->
+<div class="modal-overlay" id="newClaimModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>File Insurance Claim Request</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <form id="claimForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label class="form-label">Select Associated Policy <span class="req">*</span></label>
+            <select id="claimPolicySelect" class="form-control" required>
+              <!-- Populated via JS -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Claim Type <span class="req">*</span></label>
+            <select id="claimType" class="form-control" required>
+              <option value="Maturity Settlement">Maturity Settlement</option>
+              <option value="Death Claim (Nominee)">Death Claim (Nominee)</option>
+              <option value="Critical Illness Coverage">Critical Illness Coverage</option>
+              <option value="Accidental Disability">Accidental Disability</option>
+              <option value="Loan Against Policy">Loan Against Policy</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Claim Amount (₹) <span class="req">*</span></label>
+            <input type="number" id="claimAmount" class="form-control" placeholder="e.g. 200000" required>
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Claim Event Description & Verified Documents</label>
+            <textarea id="claimDescription" class="form-control" placeholder="Provide incident details, hospital discharge papers or maturity bond status..." rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Claim to Division</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 7. Capture New Lead Modal -->
+<div class="modal-overlay" id="leadModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Capture Sales Prospect / Lead</h3>
+      <button class="modal-close">&times;</button>
+    </div>
+    <form id="leadForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Prospect Name <span class="req">*</span></label>
+            <input type="text" id="leadName" class="form-control" placeholder="e.g. Ankit Sharma" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Number <span class="req">*</span></label>
+            <input type="tel" id="leadContact" class="form-control" placeholder="+91 98400 12345" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="leadEmail" class="form-control" placeholder="ankit@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Interested Plan Type</label>
+            <select id="leadInterest" class="form-control">
+              <option value="Endowment Plan (Jeevan Labh)">Endowment Plan (Jeevan Labh)</option>
+              <option value="Term Insurance (Tech Term)">Term Insurance (Tech Term)</option>
+              <option value="Child Plan (Amritbaal)">Child Plan (Amritbaal)</option>
+              <option value="Pension Plan (Jeevan Shanti)">Pension Plan (Jeevan Shanti)</option>
+              <option value="Health Insurance (Cancer Cover)">Health Insurance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Annual Budget Outlay</label>
+            <input type="text" id="leadBudget" class="form-control" placeholder="e.g. ₹50,000 / yr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Follow-up Target Date</label>
+            <input type="date" id="leadFollowUp" class="form-control">
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Client Notes & Requirements</label>
+            <textarea id="leadNotes" class="form-control" placeholder="Client is interested in higher education corpus for daughter..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Prospect</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 7. Agent Session Details Modal -->
+<div class="modal-overlay" id="modalAgentSession">
+  <div class="modal-content" style="max-width: 520px;">
+    <div class="modal-header">
+      <div style="display:flex; align-items:center; gap:0.6rem;">
+        <i class="fa-solid fa-shield-halved" style="color:var(--primary); font-size:1.3rem;"></i>
+        <div>
+          <h3 style="margin:0;">Active Agent Session</h3>
+          <p style="margin:0; font-size:0.75rem; color:var(--text-muted);">Authenticated LIC Development Terminal</p>
+        </div>
+      </div>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; align-items:center; gap:1rem; padding:1rem; background:rgba(2,132,199,0.06); border-radius:var(--radius-md); border:1px solid rgba(2,132,199,0.15);">
+        <div class="agent-avatar" id="sessionModalAvatar" style="width:48px; height:48px; font-size:1.1rem;">RV</div>
+        <div>
+          <h4 id="sessionModalAgentName" style="margin:0; font-size:1rem; font-weight:700;">Ramesh Kumar Verma</h4>
+          <div style="font-size:0.78rem; color:var(--primary); font-weight:600;" id="sessionModalAgentCode">DAS-LIC-001</div>
+          <div style="font-size:0.72rem; color:var(--text-muted);" id="sessionModalClub">Chairman's Club Member (MDRT Aspirant)</div>
+        </div>
+      </div>
+
+      <div class="session-info-grid">
+        <div class="session-info-box">
+          <div class="label">Assigned Branch</div>
+          <div class="value" id="sessionModalBranch" style="font-size:0.8rem;">Chennai Metro Central (884)</div>
+        </div>
+        <div class="session-info-box">
+          <div class="label">Operating Division</div>
+          <div class="value" id="sessionModalDivision" style="font-size:0.8rem;">Southern Zone</div>
+        </div>
+        <div class="session-info-box">
+          <div class="label">Session Duration</div>
+          <div class="value" id="sessionModalDuration" style="font-size:0.8rem; color:var(--success);">Active</div>
+        </div>
+        <div class="session-info-box">
+          <div class="label">Authenticated At</div>
+          <div class="value" id="sessionModalLoginTime" style="font-size:0.75rem;">Today</div>
+        </div>
+      </div>
+
+      <div class="security-verified-box">
+        <i class="fa-solid fa-lock" style="color:var(--success); font-size:1.1rem;"></i>
+        <div>
+          <strong style="color:var(--text-main);">Session Token Verified:</strong>
+          <span id="sessionModalToken" style="font-family:monospace; font-size:0.75rem; margin-left:4px;">LIC-AUTH-SECURE-884</span>
+          <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+            Protected under 256-Bit SSL local encryption & Task WD-LIC-001 sandbox.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <button type="button" class="btn btn-outline" onclick="App.navigate('settings'); document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));">
+        <i class="fa-solid fa-sliders"></i> Edit Profile
+      </button>
+      <div style="display:flex; gap:0.5rem;">
+        <button type="button" class="btn btn-outline" data-modal-close>Close</button>
+        <button type="button" class="btn btn-danger" onclick="App.handleLogout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Lock Session
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Secure Agent Login / Lock Screen Modal -->
+<div class="modal-overlay" id="modalAgentLogin">
+  <div class="modal-content" style="max-width: 440px; text-align: center;">
+    <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0;">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #003366); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto; box-shadow: var(--shadow-md);">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+    </div>
+    <h3 style="margin-top: 0.75rem; margin-bottom: 0.25rem;">AgentPro Authentication</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+      LIC Portal Terminal · Task ID: WD-LIC-001
+    </p>
+
+    <form id="agentLoginForm" onsubmit="App.handleLoginSubmit(event)">
+      <div class="modal-body" style="text-align: left; padding: 0 1.5rem 1rem 1.5rem;">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">LIC Agent Code / ID</label>
+          <div style="position:relative;">
+            <i class="fa-solid fa-id-badge" style="position:absolute; left:12px; top:12px; color:var(--text-muted);"></i>
+            <input type="text" id="loginAgentCode" class="form-control" style="padding-left:36px;" value="DAS-LIC-001" placeholder="e.g. DAS-LIC-001" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Security PIN / Password</label>
+          <div style="position:relative;">
+            <i class="fa-solid fa-key" style="position:absolute; left:12px; top:12px; color:var(--text-muted);"></i>
+            <input type="password" id="loginAgentPin" class="form-control" style="padding-left:36px;" value="lic123" placeholder="Enter PIN (e.g. lic123)">
+          </div>
+          <small style="color:var(--text-dim); font-size:0.72rem;">Default demo PIN: <code>lic123</code></small>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">
+          <i class="fa-solid fa-right-to-bracket"></i> Authenticate Agent Session
+        </button>
+
+        <div style="position:relative; text-align:center; margin: 0.75rem 0;">
+          <span style="background:var(--bg-card); padding: 0 8px; font-size:0.72rem; color:var(--text-dim); position:relative; z-index:1;">OR INSTANT EVALUATION</span>
+          <div style="position:absolute; top:50%; left:0; width:100%; height:1px; background:var(--border-color); z-index:0;"></div>
+        </div>
+
+        <button type="button" class="btn btn-outline" style="width: 100%; border-color: var(--lic-gold); color: var(--lic-gold);" onclick="App.quickDemoLogin()">
+          <i class="fa-solid fa-bolt"></i> 1-Click Fast Login (Ramesh Verma)
+        </button>
+      </div>
+      <div class="modal-footer" style="justify-content:center; border-top:1px solid var(--border-color); font-size:0.75rem; color:var(--text-muted);">
+        <i class="fa-solid fa-lock" style="color:var(--success)"></i> 256-Bit Encrypted Session · Student Code: DAS-LIC-001
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Consolidated JavaScript Bundle (Root Flat Architecture) -->
+<script src="app.js" charset="UTF-8"></script>
+
+</body>
+</html>
